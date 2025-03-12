@@ -1,13 +1,26 @@
 import pandas as pd
 
+# Carregar o JSON
 data = pd.read_json('enem_2023.json')
 
-# 1 - qual das disciplinas tem a maior amplitude de nota?
+# Verificar os tipos das colunas
+print("Tipos de dados:\n", data.dtypes)
 
-amplitude = data.max() - data.min()
+# Selecionar apenas as colunas numéricas (notas)
+colunas_numericas = ["Linguagens", "Ciências humanas", "Ciências da natureza", "Matemática", "Redação"]
+
+# Garantir que são numéricas (já parecem ser float64, mas por segurança)
+data[colunas_numericas] = data[colunas_numericas].apply(pd.to_numeric, errors="coerce")
+
+# Calcular a amplitude
+amplitude = data[colunas_numericas].max() - data[colunas_numericas].min()
 print("Amplitude:\n", amplitude)
+
+# Encontrar a disciplina com maior amplitude
 maior_amplitude = amplitude.idxmax()
 print("Disciplina com maior amplitude:", maior_amplitude)
+
+
 
 
 # 2 - qual é a média e a mediana para cada uma das disciplinas? (Lembre-se de remover todos os valores nulos quando considerar a mediana)
